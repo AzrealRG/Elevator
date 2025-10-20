@@ -30,16 +30,17 @@ public class Elevator{
         return doorOpen;
     }
 
-    public void openDoor(){
+    //Opening and closing the elevator door with a message for each
+    public void openDoor(){//what floor the elevator is opening on
         doorOpen = true;;
         System.out.println("Floor " + getFloor());
     }
-    public void closeDoor(){
+    public void closeDoor(){//telling people to be careful of the door
         doorOpen = false;
         System.out.println("Stand clear of the closing doors!");
     }
 
-    public void emergencyButton(){
+    public void emergencyButton(){//The red button on an elevator
         System.out.println("CALLING 911 AND ALERTING MAINTENANCE!!");
     }
 }
