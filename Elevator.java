@@ -25,8 +25,8 @@ public class Elevator{
     }
 
     private void buildElevator(int numFloors){
-        if (numFloors <= 1){//attempted to create a negative floor elevator
-            System.out.println("Number of Floors isn't positive");
+        if (numFloors <= 1){//attempted to create a negative floor or 1 floor elevator
+            System.out.println("Number of Floors isn't positive or building too small");
             return;
         }
         bottomFloor = curFloor = new ElevatorNode<Integer>(1);//holds bottom floor
@@ -42,6 +42,9 @@ public class Elevator{
 
     //basic gets
     public int getFloor(){
+        if(curFloor == null) {
+            return -1; // Error state
+        }
         return curFloor.data;
     }
     public Direction getDirection(){
@@ -84,12 +87,12 @@ public class Elevator{
             System.out.println("Going down");
             direction = Direction.DOWN;
         }
-        else{//switch to going up if no down requests
+        else if(downOrder.isEmpty()){//switch to going up if no down requests
             System.out.println("Going up");
             direction = Direction.UP;
         }
 
-        if(direction == Direction.UP){
+        if(getDirection() == Direction.UP){
             int nextFloor = upOrder.poll();
 
             if(topFloor.data < nextFloor){//next floor in queue doesn't exist
@@ -100,10 +103,9 @@ public class Elevator{
             while (nextFloor > curFloor.data){
                 curFloor = curFloor.next;
             }
-            System.out.println("Floor " + curFloor.data);
             openDoor();
         }
-        else if(direction == Direction.DOWN){
+        else if(getDirection() == Direction.DOWN){
             int nextFloor = downOrder.poll();
 
             if(bottomFloor.data > nextFloor){//next floor in queue doesn't exist
@@ -115,12 +117,11 @@ public class Elevator{
             while(nextFloor < curFloor.data){
                 curFloor = curFloor.prev;
             }
-            System.out.println("Floor " + curFloor.data);
             openDoor();
         }
 
         try{
-            Thread.sleep(4000);//stays open for 4 seconds
+            Thread.sleep(1000);//stays open for 4 seconds
         }
         catch(InterruptedException e){
             Thread.currentThread().interrupt();
