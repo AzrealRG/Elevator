@@ -1,10 +1,11 @@
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.PriorityQueue;
 
 public class Elevator{
     private int curFloor;
     private boolean doorOpen;
-    private Queue<Integer> floorOrder;
+    private PriorityQueue<Integer> upFloorOrder;
+    private PriorityQueue<Integer> downFloorOrder;
     private Direction direction;
 
     public enum Direction{
@@ -16,7 +17,8 @@ public class Elevator{
         this.curFloor = initialFloor;
         this.doorOpen = true;//door must be open initially so people can get on
         this.direction = Direction.IDLE;
-        this.floorOrder = new LinkedList<>();
+        this.upFloorOrder = new PriorityQueue<>();
+        this.downFloorOrder = new PriorityQueue<>();
     }
 
     //basic gets
@@ -41,6 +43,12 @@ public class Elevator{
     }
 
     public void emergencyButton(){//The red button on an elevator
-        System.out.println("CALLING 911 AND ALERTING MAINTENANCE!!");
+        System.out.println("CALLING 911 AND ALERTING MAINTENANCE!! MAYDAY! MAYDAY!");
+    }
+
+    public void requests(int floor){
+        if(floor < getFloor()){
+            upFloorOrder.offer(floor);
+        }
     }
 }
