@@ -1,11 +1,11 @@
-import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Collections;
 
 public class Elevator{
     private int curFloor;
     private boolean doorOpen;
-    private PriorityQueue<Integer> upFloorOrder;
-    private PriorityQueue<Integer> downFloorOrder;
+    private PriorityQueue<Integer> upOrder;
+    private PriorityQueue<Integer> downOrder;
     private Direction direction;
 
     public enum Direction{
@@ -17,8 +17,9 @@ public class Elevator{
         this.curFloor = initialFloor;
         this.doorOpen = true;//door must be open initially so people can get on
         this.direction = Direction.IDLE;
-        this.upFloorOrder = new PriorityQueue<>();
-        this.downFloorOrder = new PriorityQueue<>();
+        //max and min heaps to go next up or down floor.
+        this.upOrder = new PriorityQueue<>();
+        this.downOrder = new PriorityQueue<>(Collections.reverseOrder());
     }
 
     //basic gets
@@ -48,7 +49,10 @@ public class Elevator{
 
     public void requests(int floor){
         if(floor < getFloor()){
-            upFloorOrder.offer(floor);
+            downOrder.add(floor);
+        }
+        else if(floor > getFloor()){
+            upOrder.add(floor);
         }
     }
 }
