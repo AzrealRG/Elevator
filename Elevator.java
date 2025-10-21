@@ -73,7 +73,7 @@ public class Elevator{
             upOrder.add(floor);
         }
     }
-
+    
     public void move(){
         if(upOrder.isEmpty() && downOrder.isEmpty()){//trying to run move without any requests
             System.out.println("No requested Floor");
@@ -100,6 +100,8 @@ public class Elevator{
             while (nextFloor > curFloor.data){
                 curFloor = curFloor.next;
             }
+            System.out.println("Floor " + curFloor.data);
+            openDoor();
         }
         else if(direction == Direction.DOWN){
             int nextFloor = downOrder.poll();
@@ -114,6 +116,15 @@ public class Elevator{
                 curFloor = curFloor.prev;
             }
             System.out.println("Floor " + curFloor.data);
+            openDoor();
         }
+
+        try{
+            Thread.sleep(4000);//stays open for 4 seconds
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        closeDoor();
     }
 }
