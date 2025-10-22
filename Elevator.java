@@ -9,9 +9,13 @@ public class Elevator{
     private PriorityQueue<Integer> upOrder;
     private PriorityQueue<Integer> downOrder;
     private Direction direction;
+    private Status status;
 
     public enum Direction{
         UP, DOWN, IDLE
+    }
+    public enum Status{
+        WORKING, BROKEN
     }
 
     //creating the elevator only requires the initial floor
@@ -22,6 +26,8 @@ public class Elevator{
         //max and min heaps to go next up or down floor.
         this.upOrder = new PriorityQueue<>();
         this.downOrder = new PriorityQueue<>(Collections.reverseOrder());
+        //Elevator status
+        this.status = Status.WORKING;
     }
 
     private void buildElevator(int numFloors){
@@ -53,6 +59,9 @@ public class Elevator{
     public boolean isDoorOpen(){
         return doorOpen;
     }
+    public Status getStatus(){
+        return status;
+    }
 
     //Opening and closing the elevator door with a message for each
     public void openDoor(){//what floor the elevator is opening on
@@ -66,6 +75,8 @@ public class Elevator{
 
     public void emergencyButton(){//The red button on an elevator
         System.out.println("CALLING 911 AND ALERTING MAINTENANCE!! MAYDAY! MAYDAY!");
+        status = Status.BROKEN;
+        System.out.println("GET ELEVATOR FIXED BEFORE IT CAN MOVE");
     }
 
     public void requests(int floor){
@@ -77,7 +88,23 @@ public class Elevator{
         }
     }
     
+    public void fixElevator(){
+        System.out.println("Elevator being fixed");
+        try{
+            Thread.sleep(10000);//technician fixing the Elevator
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Elevator fixed");
+        status = Status.WORKING;
+    }
+
     public void move(){
+        if(getStatus() == Status.BROKEN){//if elevator broken, it wont move until it is fixed
+            System.out.println("Elevator broken/emergency brake, get maintenance to fix elevator before continuing");
+            return;
+        }
         if(upOrder.isEmpty() && downOrder.isEmpty()){//trying to run move without any requests
             System.out.println("No requested Floor");
             direction = Direction.IDLE;
