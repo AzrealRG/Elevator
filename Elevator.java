@@ -84,11 +84,9 @@ public class Elevator{
             return;
         }
         else if(upOrder.isEmpty()){//switch to going down if no up requests
-            System.out.println("Going down");
             direction = Direction.DOWN;
         }
         else if(downOrder.isEmpty()){//switch to going up if no down requests
-            System.out.println("Going up");
             direction = Direction.UP;
         }
 
@@ -99,8 +97,9 @@ public class Elevator{
                 upOrder.clear();
                 System.out.println("No such floor!");
             }
-
-            while (nextFloor > curFloor.data){
+            System.out.println("Going up");
+            while(nextFloor > curFloor.data){
+                System.out.println(getFloor());
                 curFloor = curFloor.next;
             }
             openDoor();
@@ -113,15 +112,16 @@ public class Elevator{
                 System.out.println("No such floor!");
                 return;
             }
-
+            System.out.println("Going down");
             while(nextFloor < curFloor.data){
+                System.out.println(getFloor());
                 curFloor = curFloor.prev;
             }
             openDoor();
         }
 
         try{
-            Thread.sleep(1000);//stays open for 4 seconds
+            Thread.sleep(3000);//stays open for 3 seconds
         }
         catch(InterruptedException e){
             Thread.currentThread().interrupt();
