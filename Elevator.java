@@ -30,6 +30,14 @@ public class Elevator{
         this.status = Status.WORKING;
     }
 
+    public static void await(long millis){//So i dont have to keep writing sleep
+        try{
+            Thread.sleep(millis);
+        }catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+    }
+
     private void buildElevator(int numFloors){
         if (numFloors <= 1){//attempted to create a negative floor or 1 floor elevator
             System.out.println("Number of Floors isn't positive or building too small");
@@ -90,12 +98,7 @@ public class Elevator{
     
     public void fixElevator(){
         System.out.println("Elevator being fixed");
-        try{
-            Thread.sleep(10000);//technician fixing the Elevator
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+        await(10000);
         System.out.println("Elevator fixed");
         status = Status.WORKING;
     }
@@ -128,6 +131,7 @@ public class Elevator{
             while(nextFloor > curFloor.data){
                 System.out.println(getFloor());
                 curFloor = curFloor.next;
+                await(500);
             }
             openDoor();
         }
@@ -143,16 +147,12 @@ public class Elevator{
             while(nextFloor < curFloor.data){
                 System.out.println(getFloor());
                 curFloor = curFloor.prev;
+                await(500);
             }
             openDoor();
         }
 
-        try{
-            Thread.sleep(3000);//stays open for 3 seconds
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+        await(3000);
         closeDoor();
     }
 }
